@@ -23,36 +23,41 @@ class TestRK2(unittest.TestCase):
         Browser(4, 'Yandex', 64400, 3),
         Browser(5, 'OperaGX', 75600, 4),
     ]
+    browsers_computers = [
+        BrowComp(1, 1), BrowComp(2, 2), BrowComp(3, 3), BrowComp(3, 4), BrowComp(4, 5),
+        BrowComp(11, 1), BrowComp(22, 2), BrowComp(33, 3), BrowComp(33, 4), BrowComp(44, 5),
+    ]
 
     def test_A1(self):
-        one_to_many = [(e.name, e.cores, d.model)
-                       for d in computers
-                       for e in browsers
-                       if e.dep_id == d.id]
-        self.assertEqual(n1_sol(one_to_many),
-                         [('Pentium', 2, 'ASUS 2000'), ('Celeron', 1, 'ASUS 2000'), ('Core i3', 4, 'Honor 2020'),
-                          ('Core i7', 2, 'Honor 2020'), ('M1', 8, 'MacBook Pro')])
+        o_to_m = [(brw.name, brw.size, cmp.name)
+                  for cmp in computers
+                  for brw in browsers
+                  if brw.comp_id == cmp.id]
+        self.assertEqual(n1_sol(o_to_m),
+                         ('Agat', 56400, 'Agat'))
 
     def test_A2(self):
-        one_to_many = [(e.name, e.cores, d.model)
-                       for d in computers
-                       for e in browsers
-                       if e.dep_id == d.id]
-        self.assertEqual(n2_sol(one_to_many),
-                         [('MacBook Pro', 8), ('Honor 2020', 6), ('ASUS 2000', 3)])
+        o_to_m = [(brw.name, brw.size, cmp.name)
+                  for cmp in computers
+                  for brw in browsers
+                  if brw.comp_id == cmp.id]
+        self.assertEqual(n2_sol(o_to_m),
+                         [('Enigma', 12300)])
 
     def test_A3(self):
-        many_to_many_temp = [(d.model, ed.dep_id, ed.emp_id)
-                             for d in computers
-                             for ed in emps_deps
-                             if d.id == ed.dep_id]
+        m_to_m_tmp = [(cmp.name, brwcmp.comp_id, brwcmp.brow_id)
+                      for cmp in computers
+                      for brwcmp in browsers_computers
+                      if cmp.id == brwcmp.comp_id]
 
-        many_to_many = [(e.name, e.cores, dep_name)
-                        for dep_name, dep_id, emp_id in many_to_many_temp
-                        for e in browsers if e.id == emp_id]
-        self.assertEqual(n3_sol(many_to_many),
-                         {'MacBook Air': ['Pentium', 'Celeron', 'Core i3'], 'MacBook Pro': ['M1'],
-                          'iMac 2013': ['Core i7']})
+        m_to_m = [(brw.name, brw.size, tmp_name)
+                  for tmp_name, tmp_id, emp_id in m_to_m_tmp
+                  for brw in browsers if brw.id == emp_id]
+        self.assertEqual(n3_sol(m_to_m),
+                         [('Chrome', 12300, 'Enigma'),
+                          ('Chrome', 12300, 'Asus'), ('Opera', 34500, 'Macintosh'), ('Opera', 34500, 'Lenovo'),
+                          ('OperaGX', 75600, 'Macintosh'), ('OperaGX', 75600, 'AMD'), ('Safari', 56400, 'Agat'),
+                          ('Safari', 56400, 'Apple'), ('Yandex', 64400, 'Agat'), ('Yandex', 64400, 'Apple')])
 
 
 if __name__ == '__main__':
