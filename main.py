@@ -40,6 +40,26 @@ browsers_computers = [
     BrowComp(11, 1), BrowComp(22, 2), BrowComp(33, 3), BrowComp(33, 4), BrowComp(44, 5),
 ]
 
+def n1_sol(o_to_m):
+
+    numb_1 = sorted([(name, size, name) for name, size, name in o_to_m if name.startswith('A')], key=itemgetter(2))
+    for i in numb_1:
+        return(i)
+def n2_sol(o_to_m):
+    numb_2_unsorted = []
+    for d in computers:
+        d_emps = list(filter(lambda i: i[2] == d.name, o_to_m))
+        if len(d_emps) > 0:
+            d_sizes = [size for _, size, _ in d_emps]
+            d_sizes_min = min(d_sizes)
+            numb_2_unsorted.append((d.name, d_sizes_min))
+            numb_2 = sorted(numb_2_unsorted, key=itemgetter(1), )
+            return(numb_2)
+
+def n3_sol(m_to_m):
+    numb_3 = sorted(m_to_m, key=itemgetter(0))
+    return(numb_3)
+
 def main():
     o_to_m = [(brw.name, brw.size, cmp.name)
                    for cmp in computers
@@ -57,26 +77,13 @@ def main():
 
 
     print('N 1')
-
-    numb_1 = sorted([(name, size, name) for name, size, name in o_to_m if name.startswith('A')], key=itemgetter(2))
-    for i in numb_1:
-        print(i)
+    print(n1_sol(o_to_m))
 
 
     print('N 2')
-    numb_2_unsorted = []
-    for d in computers:
-        d_emps = list(filter(lambda i: i[2] == d.name, o_to_m))
-        if len(d_emps) > 0:
-            d_sizes = [size for _, size, _ in d_emps]
-            d_sizes_min = min(d_sizes)
-            numb_2_unsorted.append((d.name, d_sizes_min))
-
-    numb_2 = sorted(numb_2_unsorted, key=itemgetter(1),)
-    print(numb_2)
+    print(n2_sol(o_to_m))
 
     print('N 3')
-    numb_3 = sorted(m_to_m, key=itemgetter(0))
-    print(numb_3)
+    print (n3_sol(m_to_m))
 if __name__ == '__main__':
     main()
