@@ -3,14 +3,11 @@ import math
 class Color:
     def __init__(self, value: str):
         self._value = value
-
     @property
     def value(self) -> str:
         return self._value
-
     def __repr__(self):
         return self.value
-
 class Figure(metaclass=ABCMeta):
     @abstractmethod
     def get_area(self) -> float:
@@ -26,7 +23,6 @@ class Circle(Figure):
 
     def __repr__(self):
         return "{}: радиус: {}, цвет: {}".format(self._name, self._radius, self._color)
-
 
 class Rectangle(Figure):
     def __init__(self, width: float, height: float, color: Color):
